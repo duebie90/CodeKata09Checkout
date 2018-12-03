@@ -38,9 +38,10 @@ public class PricingRulesManager {
 				JSONObject pricesJson = (JSONObject)itemJson.get("prices");
 				// get the individual pricing strategies				
 				PricingRules itemPricingRules = new PricingRules();
-				for( Object amountPurchased: pricesJson.keySet()) {					
-					double price = (double) pricesJson.get(amountPurchased);
-					itemPricingRules.addRule(Integer.parseInt((String) amountPurchased), (float)price);					
+				for( Object amountPurchased: pricesJson.keySet()) {
+					// Make detour via string to be able to reader either double, int or string prices
+					float price = Float.parseFloat(pricesJson.get(amountPurchased).toString());										
+					itemPricingRules.addRule(Integer.parseInt((String) amountPurchased), price);					
 				}	
 				// create the item representation								
 				pricingRules.put((String)itemJson.get("name"), itemPricingRules);

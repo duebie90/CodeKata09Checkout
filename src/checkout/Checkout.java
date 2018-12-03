@@ -21,16 +21,28 @@ public class Checkout {
 		}		
 	}	
 	
+	private void incrementPurchasedCounter(Item item) {
+		int count = this.mapItems2Amount.get(item);
+		count++;
+		this.mapItems2Amount.put(item, count);
+	}
+	
 	public void scan(Item item) {
 		// "Scanns" an item. Checkout will remember the item and amount purchased	
-		int count = 1;
 		if(mapItems2Amount.containsKey(item)) {
 			//increment the stored count of scanned units of the item			
-			count = this.mapItems2Amount.get(item);
-			count++;
-		}
-		this.mapItems2Amount.put(item, count);		
-				
+			incrementPurchasedCounter(item);
+		} else {
+			// Check if there is an already scanned item with the same name (but a different instance of the item)
+			for(Item purchasedItem: this.mapItems2Amount.keySet()) {
+				if(purchasedItem.getName().equals(item.getName())) {
+					incrementPurchasedCounter(purchasedItem);
+					return;
+				}
+			}
+			// Items like that have not been purchased so far
+			this.mapItems2Amount.put(item, 1);
+		} 								
 	}
 	
 	public float total() {
