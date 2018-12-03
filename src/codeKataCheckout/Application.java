@@ -15,13 +15,18 @@ public class Application {
 		Item i2 = new Item("C");
 		Item i3 = new Item("Beer");
 		
-		co.scan(i0);
+		co.scan(i0);		
+		co.scan(i1);		
+		co.scan(i1);
 		co.scan(i1);
 		co.scan(i2);
-		co.scan(i3);
+		co.scan(i0);
+		co.reset();
+		co.scan(i0);
 		
 		
-		System.out.println(co.total());
+		
+		System.out.println("Total amount due: " + co.total());
 		
 	}
 
