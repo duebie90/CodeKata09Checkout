@@ -24,6 +24,7 @@ public class PricingRulesManager {
 	}
 	
 	private void updatePricingRulesFromJson(FileReader fileReader) {
+		// Parsing the json file and generate PricingRules for each item.
 		JSONParser parser = new JSONParser();
 		Object obj;
 		try {
@@ -37,11 +38,9 @@ public class PricingRulesManager {
 				JSONObject pricesJson = (JSONObject)itemJson.get("prices");
 				// get the individual pricing strategies				
 				PricingRules itemPricingRules = new PricingRules();
-				for( Object amountPurchased: pricesJson.keySet().toArray()) {
-					// Sadly detour via string seems to be necessary to achieve constant datatype of numbers
-					// ToDo: find better way
-					Float price = Float.parseFloat(pricesJson.get(amountPurchased).toString());						
-					itemPricingRules.addRule(Integer.parseInt((String) amountPurchased), price);					
+				for( Object amountPurchased: pricesJson.keySet()) {					
+					double price = (double) pricesJson.get(amountPurchased);
+					itemPricingRules.addRule(Integer.parseInt((String) amountPurchased), (float)price);					
 				}	
 				// create the item representation								
 				pricingRules.put((String)itemJson.get("name"), itemPricingRules);
