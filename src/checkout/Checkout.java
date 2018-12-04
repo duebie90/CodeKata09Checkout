@@ -7,21 +7,35 @@ import rules.*;
 
 
 public class Checkout {	
-	//This class implements the checkout. 
-	//The constructor expects a filename pointing to one of the .json files under src/RuleConfigFiles 
+	/**Checkout: Implements the checkout. 
+	*The constructor expects a filename pointing to one of the .json files under src/RuleConfigFiles
+	If no filename is given it prints an error message and won't do anything
+	**/
 	private PricingRulesManager rulesManager;
 	private HashMap<Item, Integer> mapItems2Amount = new HashMap<Item, Integer>();
 	
 	public Checkout(String pricingRulesFilename) {
+		// Preparing the PricingRulesManager 
+		updatePricingRulesManager(pricingRulesFilename);
+	}
+	
+	public void setPricingRules(String pricingRulesFilename) {
+		// The pricing rules can be set later on but checkout will be reseted
+		reset();
+		updatePricingRulesManager(pricingRulesFilename);
+	}
+	
+	private void updatePricingRulesManager(String pricingRulesFilename) {
+		// Create the PricingRulesManager with the given filename
 		try {
 			rulesManager = new PricingRulesManager(pricingRulesFilename);
 		} catch (FileNotFoundException e) {
-			System.err.println("Sorry. Pricing rules file '" + pricingRulesFilename + "' not found. Checkout won't work.");
-			
-		}		
-	}	
+			System.err.println("Sorry. Pricing rules file '" + pricingRulesFilename + "' not found. Checkout won't work.");			
+		}	
+	}
 	
 	private void incrementPurchasedCounter(Item item) {
+		// Increments the counter of (distinct) scanned items
 		int count = this.mapItems2Amount.get(item);
 		count++;
 		this.mapItems2Amount.put(item, count);
