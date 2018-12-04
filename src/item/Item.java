@@ -2,6 +2,12 @@ package item;
 import java.util.ArrayList;
 import rules.PricingRules;
 
+/*
+ * Item: Represents one Item, that can be taken in by Checkout.
+ * It mainly contains its own name.
+ */
+
+
 public class Item {
 	private String name;	
 

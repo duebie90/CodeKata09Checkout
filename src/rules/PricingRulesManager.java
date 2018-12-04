@@ -13,7 +13,10 @@ import org.json.simple.parser.*;
 import item.Item;
 
 import org.json.simple.*;
-
+/*
+ * PricingRulesManager: Parses the given .json file and if successful creates PricingRules-object for each configured item
+ * 
+ */
 public class PricingRulesManager {
 	HashMap<String, PricingRules>pricingRules = new HashMap<String, PricingRules>();
 
@@ -44,8 +47,7 @@ public class PricingRulesManager {
 					itemPricingRules.addRule(Integer.parseInt((String) amountPurchased), price);					
 				}	
 				// create the item representation								
-				pricingRules.put((String)itemJson.get("name"), itemPricingRules);
-				System.out.println("item prices " + itemPricingRules);				
+				pricingRules.put((String)itemJson.get("name"), itemPricingRules);								
 			}		
 	
 		} catch (IOException e) {
@@ -56,6 +58,8 @@ public class PricingRulesManager {
 	}
 	
 	public float getUnitPriceByAmount(String itemName, int amount) {
+		// Returns the total price of a certain amount of an article taking pricing rules/ discounts under account.
+		// The actual pricing is fetched from the corresponding PricingRules-Object if available otherwise 0.0.
 		if(this.pricingRules.containsKey(itemName)) {
 			PricingRules itemPricingRules = this.pricingRules.get(itemName);
 			return itemPricingRules.getPriceByAmount(amount);				
